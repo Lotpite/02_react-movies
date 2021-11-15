@@ -1,4 +1,5 @@
-import {Navbar, Nav, Container, Form, FormControl, Button, Figure } from 'react-bootstrap';
+import {Navbar, Nav, Container, Form, FormControl, Button, Figure, Pagination } from 'react-bootstrap';
+import SearchPanel from '../search-panel/search-panel';
 
 const Navigation = () => {
     return (
@@ -15,15 +16,7 @@ const Navigation = () => {
                 <Nav.Link href="#action1" variant="light">Popular</Nav.Link>
                 <Nav.Link href="#action2">Favorites</Nav.Link>
             </Nav>
-            <Form className="d-flex">
-                <FormControl
-                type="search"
-                placeholder="Search"
-                className="me-2"
-                aria-label="Search"
-                />
-                <Button variant="outline-light">Search</Button>
-            </Form>
+            <SearchPanel/>
             </Navbar.Collapse>
         </Container>
     </Navbar>
