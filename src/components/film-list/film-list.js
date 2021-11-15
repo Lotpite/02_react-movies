@@ -3,27 +3,9 @@ import FilmItem from '../film-item/film-item';
 
 const FilmList =() => {
     return (
-        <Container className="justify-content-md-center">
+        <Container className="justify-content-md-center" >
             <Row>
                 <Col>
-                    <FilmItem/>
-                </Col>
-                <Col>
-                    <FilmItem/>
-                </Col>
-                <Col>
-                    <FilmItem/>
-                </Col>
-                <Col>
-                    <FilmItem/>
-                </Col>
-                <Col>
-                    <FilmItem/>
-                </Col>
-                <Col>
-                    <FilmItem/>
-                </Col>
-                 <Col>
                     <FilmItem/>
                 </Col>
                 <Col>

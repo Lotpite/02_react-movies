@@ -3,7 +3,8 @@ import poster from '../../img/template.jpg';
 
 const FilmItem = () => {
     return (
-        <Card bg='dark' text='light' style={{ width: '20rem'}}>
+        <>
+        <Card bg='light' text='dark' style={{ width: '20rem'}}>
             <Card.Img variant="top" src={poster} alt="img"/>
             <Card.Body>
             <Card.Title>Card Title</Card.Title>
@@ -11,9 +12,11 @@ const FilmItem = () => {
                 Some quick example text to build on the card title and make up the bulk of
                 the card's content.
             </Card.Text>
-            <Button variant="outline-light">Go somewhere</Button>
+            <Button variant="outline-dark">Go somewhere</Button>
             </Card.Body>
       </Card>
+      <br />
+      </>
     )
 }
 
