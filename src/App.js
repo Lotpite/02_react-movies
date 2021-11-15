@@ -1,9 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
+import {Button} from 'react-bootstrap';
+import Header from './components/header/navigation.js';
 
-const Header = () => {
-  return <h2>Filmzzz</h2>
-}
 
 const Field = () => {
   return <input type="text" placeholder="search film..." />
@@ -13,7 +12,7 @@ const Btn = () => {
   const text = 'Log in';
   const logged = false;
 
-  return <button>{logged ? 'Enter' : text}</button>
+  return <Button variant="outline-primary">Primary</Button>
 }
 
 function App() {
