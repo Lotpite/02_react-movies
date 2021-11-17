@@ -1,28 +1,28 @@
 import {Container, Row, Col} from 'react-bootstrap';
-import FilmItem from '../film-item/film-item';
+import Film from '../film-item/film-item';
 
 const FilmList =() => {
     return (
         <Container className="justify-content-md-center" >
             <Row>
                 <Col>
-                    <FilmItem/>
+                    <Film/>
+                </Col>
+                {/* <Col>
+                    <Film/>
                 </Col>
                 <Col>
-                    <FilmItem/>
+                    <Film/>
                 </Col>
                 <Col>
-                    <FilmItem/>
+                    <Film/>
                 </Col>
                 <Col>
-                    <FilmItem/>
+                    <Film/>
                 </Col>
                 <Col>
-                    <FilmItem/>
-                </Col>
-                <Col>
-                    <FilmItem/>
-                </Col>
+                    <Film/>
+                </Col> */}
             </Row>
         </Container>
     )
