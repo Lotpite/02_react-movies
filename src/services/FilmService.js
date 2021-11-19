@@ -1,7 +1,10 @@
-const api = '052a7bfc73ba8f24b52cbf7c006da253';
-
 class FilmService {
 
+    _apiKey = '052a7bfc73ba8f24b52cbf7c006da253';
+    _apiBase = 'https://api.themoviedb.org/3/';
+    _basePage = 1;
+
+    
     // function template to get resource from db
     getResource = async (url) => {
         let result = await fetch(url);
@@ -14,32 +17,33 @@ class FilmService {
     }
 
     getFilmByID = async (id = 62) => {
-        const res = await this.getResource(`https://api.themoviedb.org/3/movie/${id}?api_key=052a7bfc73ba8f24b52cbf7c006da253`); //Request to DBі
+        const res = await this.getResource(`${this._apiBase}movie/${id}?api_key=${this._apiKey}`); //Request to DBі
         return this._transcriptFilm(res);
     }
 
-    getPopular = async () => {
-        const res = await this.getResource('https://api.themoviedb.org/3/movie/popular?api_key=052a7bfc73ba8f24b52cbf7c006da253&language=en-US&page=1'); // required page number
+    getPopular = async (page = this._basePage) => {
+        const res = await this.getResource(`${this._apiBase}movie/popular?api_key=${this._apiKey}&language=en-US&page=${page}`); // required page number
         return res.results.map(item => this._transcriptFilm(item));
     }
 
-    getGenres = () => {
-        return this.getResource('https://api.themoviedb.org/3/genre/movie/list?api_key=052a7bfc73ba8f24b52cbf7c006da253&language=en-US');
+    getGenres = async() => {
+        const res = await this.getResource(`${this._apiBase}genre/movie/list?api_key=${this._apiKey}&language=en-US`);
+        return res.genres;
     }
 
     getDescription = () => {
-        return this.getResource(`https://api.themoviedb.org/3/movie/{movie_id}?api_key=052a7bfc73ba8f24b52cbf7c006da253&language=en-US`); // required move_id
+        return this.getResource(`${this._apiBase}movie/{movie_id}?api_key=${this._apiKey}&language=en-US`); // required move_id
     }
 
     _transcriptFilm(film) {
         return {
+            id: film.id,
             title: film.original_title,
             genre_ids: film.genre_ids,
             description: film.overview,
-            poster_path: film.poster_path,
-            backdrop_path: film.backdrop_path
+            poster_path: 'https://image.tmdb.org/t/p/w500' + film.poster_path,
         }
-    }   
+    }
 }
 
 export default FilmService;

@@ -15,8 +15,7 @@ class Film extends Component {
             title: null,
             genres: null,
             description: null,
-            poster_path: null,
-            backdrop_path: null
+            poster_path: null
         }
     }
 
@@ -34,8 +33,7 @@ class Film extends Component {
 
     
     render() {
-         const {film: {title, description, genres, poster_path, backdrop_path}} = this.state;
-        //  const poster_path1 = 'https://image.tmdb.org/t/p/w500' + poster_path
+         const {film: {title, description, genres, poster_path}} = this.state;
          if (genres != null) {
               this.genres = genres.map((item) => {
                  return (

@@ -1,38 +1,66 @@
 import {Container, Row, Col, Card, Button, Badge} from 'react-bootstrap';
-import Film from '../film-item/film-item';
 import FilmService from '../../services/FilmService';
 import { Component } from 'react';
+import './film-list.css';   
 
 
 class FilmList extends Component {
-    constructor(props) {
-        super(props);
-        this.updateList();
-    }
+    
     state = {
-        films: []
+        films: [],
+        genres: [],
+        page: 1,
+        newItemLoading: false
     }
 
     newService = new FilmService();
 
-    // записуем список фильмов в стейт
-    onListLoaded = (films) => {
-    this.setState({films})
+    componentDidMount() {
+        this.onRequest();
+        this.newService.getGenres()
+            .then(this.onGenresLoaded)
     }
 
-    // загружаем список фильмов
-    updateList = () => {
+    // load film list (request to server)
+    onRequest = (page) => {
+        this.onFilmListLoading();
         this.newService
-        .getPopular()
-        .then(this.onListLoaded)
+            .getPopular(page)
+            .then(this.onListLoaded)
     }
+
+    onFilmListLoading = () => {
+        this.setState({
+            newItemLoading: true
+        })
+    }
+
+    // write list to the state
+    onListLoaded = (newFilms) => {
+        this.setState(({page, films}) => ({
+            films: [...films, ...newFilms], // at first time films is empty array
+            newItemLoading: false,
+            page: page + 1
+        }))
+    }
+
+    onGenresLoaded = (genres) => {
+        this.setState({genres})
+    }
+
+    
+
+    getGenresList = () => {
+        this.newService
+        .getGenres()
+        .then(this.onGenresLoaded)
+    } 
 
     renderFilms(arr) {
-        // меняем адрес картинки 
+        // change img path
         const items = arr.map((item) => {
-            item.poster_path = 'https://image.tmdb.org/t/p/w500' + item.poster_path;
 
-            // создаем бейджик для каждой id
+            // create badge for each id
             const genres = item.genre_ids.map(id => {
                 return (
                     <Badge bg="light" text="dark">
@@ -61,19 +89,25 @@ class FilmList extends Component {
         )
     }
     
-    render () {
-        // условие здесь потому что одно из значений приходит undefined
+    render () {       
+       
+        // if - to avoid empty arrays
         let items = [];
-        if (this.state.films != 0) {
+        if (this.state.films.length !== 0 && this.state.genres.length !== 0) {
             const list = this.state.films
             this.renderFilms(list);
             items = this.renderFilms(list)
+            console.log(this.state)
         }
+        const {page, newItemLoading} = this.state
 
         return (
             <Container className="justify-content-md-center" >
                     {items}
-                    <Button variant="dark" size="lg" disabled>Dark</Button>
+                    <Button variant="dark" size="lg"
+                     disabled={newItemLoading}
+                     onClick={() => this.onRequest(page)}
+                     >show more</Button>
             </Container>
         )
     }
