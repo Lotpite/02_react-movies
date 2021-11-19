@@ -1,6 +1,5 @@
 import { Component } from 'react';
 import {Card, Button, Badge} from 'react-bootstrap';
-import poster from '../../img/template.jpg';
 import FilmService from '../../services/FilmService';
 
 // required variables = img, title, genre, description, link for button to openv
@@ -38,7 +37,7 @@ class Film extends Component {
          const {film: {title, description, genres, poster_path, backdrop_path}} = this.state;
         //  const poster_path1 = 'https://image.tmdb.org/t/p/w500' + poster_path
          if (genres != null) {
-             var elements = genres.map((item) => {
+              this.genres = genres.map((item) => {
                  return (
                      <Badge bg="light" text="dark">
                          {item}
@@ -54,7 +53,7 @@ class Film extends Component {
                     <Card.Body>
                         <Card.Title>{title}</Card.Title>
                         <Badge bg="light" text="dark">
-                            {elements}
+                            {this.genres}
                         </Badge>
                         <Card.Text>
                             {description}

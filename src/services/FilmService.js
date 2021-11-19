@@ -13,17 +13,14 @@ class FilmService {
         return await result.json();
     }
 
-    // getFilmByID = (id = 62) => {
-    //     return this.getResource(`https://api.themoviedb.org/3/movie/${id}?api_key=052a7bfc73ba8f24b52cbf7c006da253`); //Request to DB
-    // }
-
     getFilmByID = async (id = 62) => {
         const res = await this.getResource(`https://api.themoviedb.org/3/movie/${id}?api_key=052a7bfc73ba8f24b52cbf7c006da253`); //Request to DBі
         return this._transcriptFilm(res);
     }
 
-    getPopular = () => {
-        return this.getResource('https://api.themoviedb.org/3/movie/popular?api_key=052a7bfc73ba8f24b52cbf7c006da253&language=en-US&page=1'); // required page number
+    getPopular = async () => {
+        const res = await this.getResource('https://api.themoviedb.org/3/movie/popular?api_key=052a7bfc73ba8f24b52cbf7c006da253&language=en-US&page=1'); // required page number
+        return res.results.map(item => this._transcriptFilm(item));
     }
 
     getGenres = () => {
@@ -35,23 +32,13 @@ class FilmService {
     }
 
     _transcriptFilm(film) {
-        // const genres = film.genres.map(genre => genre.name)
-        // console.log(genres);
         return {
             title: film.original_title,
-            genres: film.genres.map(genre => genre.name),
+            genre_ids: film.genre_ids,
             description: film.overview,
             poster_path: film.poster_path,
             backdrop_path: film.backdrop_path
         }
-        // console.log(film)
-        // return {
-        //     title: film.original_title,
-        //     genres: film.genres,
-        //     description: film.overview,
-        //     poster_path: film.poster_path,
-        //     backdrop_path: film.backdrop_path
-        // }
     }   
 }
 
