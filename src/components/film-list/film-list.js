@@ -48,20 +48,26 @@ class FilmList extends Component {
         this.setState({genres})
     }
 
-    
-
     getGenresList = () => {
         this.newService
         .getGenres()
         .then(this.onGenresLoaded)
-    } 
-
+    }    
+        
+    
     renderFilms(arr) {
         // change img path
         const items = arr.map((item) => {
 
             // create badge for each id
-            const genres = item.genre_ids.map(id => {
+            const genre = item.genre_ids.map(id => {
+                // overwrite id as genre
+                this.state.genres.forEach((item, i) => {
+                    if (id === item.id) {
+                        id = item.name
+                    }
+                })
+
                 return (
                     <Badge bg="light" text="dark">
                         {id}
@@ -74,7 +80,7 @@ class FilmList extends Component {
                     <Card bg='light' text='dark' style={{ width: '14rem'}}>
                         <Card.Img variant="top" src={item.poster_path} alt="img"/>
                         <Card.Body>
-                            {genres}
+                            {genre}
                         </Card.Body>
                     </Card>
                     <br />
@@ -97,7 +103,7 @@ class FilmList extends Component {
             const list = this.state.films
             this.renderFilms(list);
             items = this.renderFilms(list)
-            console.log(this.state)
+            console.log(this.state.genres[18].name)
         }
         const {page, newItemLoading} = this.state
 
