@@ -1,4 +1,13 @@
-.left {
+.card-body {
     display: flex;
-    flex-direction: row;
+}
+
+img {
+    width: 10rem;
+}
+
+p {
+    margin-left: 10px;
+    text-align: left;
+    width:5 0%;
 }

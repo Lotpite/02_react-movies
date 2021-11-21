@@ -1,9 +1,8 @@
 import {Container, Row, Col, Card, Button, Badge} from 'react-bootstrap';
 import FilmService from '../../services/FilmService';
 import { Component } from 'react';
+import {Link} from 'react-router-dom';
 import './film-list.css';   
-import Film from '../film-item/film-item';
-
 
 class FilmList extends Component {
     
@@ -54,13 +53,6 @@ class FilmList extends Component {
         .getGenres()
         .then(this.onGenresLoaded)
     }    
-        
-    findId = (id_name) => {
-        
-        this.state.genres.forEach(obj => {
-            console.log(Object.keys(obj).filter(key => obj[key] === id_name))
-        })
-    }
 
     renderFilms(arr) {
         // change img path
@@ -83,13 +75,14 @@ class FilmList extends Component {
 
             return (
                 <Col key={item.id}>
-                    <Card bg='light' text='dark' style={{ width: '14rem'}} className="cardList"
-                    onClick={() => console.log(this.state.films[i].id)}> 
-                        <Card.Img variant="top" src={item.poster_path} alt="img"/>
-                        <Card.Body>
-                            {genre}
-                        </Card.Body>
-                    </Card>
+                    <Link to={`/film/${item.id}`}>
+                        <Card bg='light' text='dark' style={{ width: '14rem'}} className="cardList"> 
+                            <Card.Img variant="top" src={item.poster_path} alt={item.title}/>
+                            <Card.Body>
+                                {genre}
+                            </Card.Body>
+                        </Card>
+                    </Link>
                     <br />
                 </Col>
             )
