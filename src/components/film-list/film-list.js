@@ -2,6 +2,7 @@ import {Container, Row, Col, Card, Button, Badge} from 'react-bootstrap';
 import FilmService from '../../services/FilmService';
 import { Component } from 'react';
 import './film-list.css';   
+import Film from '../film-item/film-item';
 
 
 class FilmList extends Component {
@@ -54,30 +55,36 @@ class FilmList extends Component {
         .then(this.onGenresLoaded)
     }    
         
-    
+    findId = (id_name) => {
+        
+        this.state.genres.forEach(obj => {
+            console.log(Object.keys(obj).filter(key => obj[key] === id_name))
+        })
+    }
+
     renderFilms(arr) {
         // change img path
-        const items = arr.map((item) => {
+        const items = arr.map((item, i) => {
 
             // create badge for each id
             const genre = item.genre_ids.map(id => {
                 // overwrite id as genre
-                this.state.genres.forEach((item, i) => {
-                    if (id === item.id) {
-                        id = item.name
+                this.state.genres.forEach((gen) => {
+                    if (id === gen.id) {
+                        id = gen.name
                     }
                 })
-
                 return (
-                    <Badge bg="light" text="dark">
+                    <Badge bg="light" text="dark" key={id}> 
                         {id}
                     </Badge>
                 )
             })
 
             return (
-                <Col>
-                    <Card bg='light' text='dark' style={{ width: '14rem'}}>
+                <Col key={item.id}>
+                    <Card bg='light' text='dark' style={{ width: '14rem'}} className="cardList"
+                    onClick={() => console.log(this.state.films[i].id)}> 
                         <Card.Img variant="top" src={item.poster_path} alt="img"/>
                         <Card.Body>
                             {genre}
@@ -103,7 +110,6 @@ class FilmList extends Component {
             const list = this.state.films
             this.renderFilms(list);
             items = this.renderFilms(list)
-            console.log(this.state.genres[18].name)
         }
         const {page, newItemLoading} = this.state
 

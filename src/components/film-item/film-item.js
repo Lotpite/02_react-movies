@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import {Card, Button, Badge} from 'react-bootstrap';
 import FilmService from '../../services/FilmService';
+import './film-item'
 
 // required variables = img, title, genre, description, link for button to openv
 
@@ -12,10 +13,7 @@ class Film extends Component {
 
     state = {
         film: {
-            title: null,
-            genres: null,
-            description: null,
-            poster_path: null
+            
         }
     }
 
@@ -33,7 +31,7 @@ class Film extends Component {
 
     
     render() {
-         const {film: {title, description, genres, poster_path}} = this.state;
+         const {film: {title, description, genres, poster_path, id}} = this.state;
          if (genres != null) {
               this.genres = genres.map((item) => {
                  return (
@@ -46,14 +44,14 @@ class Film extends Component {
 
         return (
             <>
-                <Card bg='light' text='dark' style={{ width: '20rem'}}>
-                    <Card.Img variant="top" src={'https://image.tmdb.org/t/p/w500' + poster_path} alt="img"/>
+                <Card bg='light' text='dark' style={{ width: '10rem'}} onClick={() => {console.log(id)}}>
+                    <Card.Img align="left" variant="top" src={'https://image.tmdb.org/t/p/w500' + poster_path} alt="img"/>
                     <Card.Body>
                         <Card.Title>{title}</Card.Title>
                         <Badge bg="light" text="dark">
-                            {this.genres}
+                            {this.props.id}
                         </Badge>
-                        <Card.Text>
+                        <Card.Text class="left">
                             {description}
                         </Card.Text>
                         <Button variant="outline-dark">Go somewhere</Button>
