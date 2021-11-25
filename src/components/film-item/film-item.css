@@ -1,4 +1,4 @@
-.card-body {
+.some {
     display: flex;
 }
 
@@ -7,7 +7,11 @@ img {
 }
 
 p {
-    margin-left: 10px;
+    margin-left: 20px;
     text-align: left;
-    width:5 0%;
+    width: 40%;
+}
+
+button:hover {
+	border: 3px solid;
 }

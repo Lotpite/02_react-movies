@@ -119,4 +119,3 @@ class FilmList extends Component {
 }
 
 export default FilmList;
-

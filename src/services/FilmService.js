@@ -17,13 +17,13 @@ class FilmService {
         return await result.json();
     }
 
-    getFilmByID = async (id = 62) => {
+    getFilmByID = async (id) => {
         const res = await this.getResource(`${this._apiBase}movie/${id}?api_key=${this._apiKey}`); //Request to DBі
         return this._transcriptFilm(res);
     }
 
     getPopular = async (page = this._basePage) => {
-        const res = await this.getResource(`${this._apiBase}movie/popular?api_key=${this._apiKey}&language=en-US&page=${page}`); // required page number
+        const res = await this.getResource(`${this._apiBase}movie/popular?api_key=${this._apiKey}&language=en-US&page=${this._basePagepage}`); // required page number
         return res.results.map(item => this._transcriptFilm(item));
     }
 
@@ -34,6 +34,11 @@ class FilmService {
 
     getDescription = () => {
         return this.getResource(`${this._apiBase}movie/{movie_id}?api_key=${this._apiKey}&language=en-US`); // required move_id
+    }
+
+    getRelated = async(id) => {
+        const res = await this.getResource(`${this._apiBase}movie/${id}/recommendations?api_key=${this._apiKey}&language=en-US&${this._basePage}`); // required page number
+        return res.results.map(item => this._transcriptFilm(item));
     }
 
     _transcriptFilm(film) {
