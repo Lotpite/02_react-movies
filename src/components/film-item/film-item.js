@@ -28,17 +28,16 @@ class Film extends Component {
 
     componentDidMount () {
         const {match: {params: {id}}} = this.props; // get id from filmlist (through router)
+        this.onChange(id)
+    }
+
+    onChange = (id) => {
         this.filmService
         .getFilmByID(id)
         .then(this.onFilmLoaded) 
-
         this.getRelated(id)
-
         this.getGenresList()
-  
     }
-
-    
 
     getRelated = (id) => {
         this.filmService
@@ -78,7 +77,7 @@ class Film extends Component {
             return (
                 <Col key={item.id}>
                     <Link to={`/film/${item.id}`}>
-                        <Card bg='light' text='dark' style={{ width: '14rem'}} className="cardList" onClick={() => this.componentDidMount()}> 
+                        <Card bg='light' text='dark' style={{ width: '14rem'}} className="cardList" onClick={() => this.onChange(item.id)}> 
                             <Card.Img variant="top" src={item.poster_path} alt={item.title}/>
                             <Card.Body>
                                 {genre}
