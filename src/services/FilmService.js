@@ -32,6 +32,11 @@ class FilmService {
         return res.genres;
     }
 
+    getSearched = async (query, page) => {
+        const res = await this.getResource(`${this._apiBase}search/movie?query=${query}&api_key=${this._apiKey}&page=${page}`);
+        return res.results.map(item => this._transcriptFilm(item));
+    }
+
     getDescription = () => {
         return this.getResource(`${this._apiBase}movie/{movie_id}?api_key=${this._apiKey}&language=en-US`); // required move_id
     }

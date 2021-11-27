@@ -9,7 +9,8 @@ const SearchPanel = () => {
             className="me-2"
             aria-label="Search"
             />
-            <Button variant="outline-light">Search</Button>
+            <Button variant="outline-light"
+            onClick={() => console.log('his')}>Search</Button>
         </Form>
     )
 };
