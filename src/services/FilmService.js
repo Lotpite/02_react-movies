@@ -23,7 +23,7 @@ class FilmService {
     }
 
     getPopular = async (page = this._basePage) => {
-        const res = await this.getResource(`${this._apiBase}movie/popular?api_key=${this._apiKey}&language=en-US&page=${this._basePagepage}`); // required page number
+        const res = await this.getResource(`${this._apiBase}movie/popular?api_key=${this._apiKey}&language=en-US&page=${page}`); // required page number
         return res.results.map(item => this._transcriptFilm(item));
     }
 
