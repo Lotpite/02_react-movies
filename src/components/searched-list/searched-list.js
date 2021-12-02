@@ -15,7 +15,7 @@ const Searched = (props) => {
         
         renderSearched();
         
-    }, []) // atention
+    }, [films]) // atention
 
         const renderSearched = () => {
             const {match: {params: {query}}} = props;
