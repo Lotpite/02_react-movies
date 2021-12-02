@@ -1,52 +1,57 @@
 import FilmService from '../../services/FilmService';
 import {Container, Row, Col, Card, Badge} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { withRouter } from 'react-router';
 
-class Searched extends Component {
+const Searched = (props) => {
+
+    const [films, setFilms] = useState([]);
+    const [genres, setGenres] = useState([]);
     
-    state = {
-        films: [],
-        genres: []
+    const newService = new FilmService();
+
+    useEffect(() => {
+        
+        renderSearched();
+        
+    }, []) // atention
+
+        const renderSearched = () => {
+            const {match: {params: {query}}} = props;
+            getGenresList()
+            getFilmsList(query)
+            console.log(films)
+        }
+    
+    const onGenresLoaded = (res) => { //(res) is required to send params to function
+        setGenres(genres => res)
     }
 
-    newService = new FilmService();
-
-    componentDidMount () {
-        const {match: {params: {query}}} = this.props; // get id from filmlist (through router)
-        this.getGenresList()
-        this.getFilmsList(query)
+    const onFilmLoaded = (res) => { //(res) is required to send params to function
+        setFilms(films => res)
     }
 
-    onGenresLoaded = (genres) => {
-        this.setState({genres})
+    const getFilmsList = (query) => {
+        newService.getSearched(query)
+        .then(onFilmLoaded) 
     }
 
-    onFilmLoaded = (films) => {
-        this.setState({films})
-    }
-
-    getFilmsList = (query) => {
-        this.newService
-        .getSearched(query)
-        .then(this.onFilmLoaded)
-    }
-
-    getGenresList = () => {
-        this.newService
+    const getGenresList = () => {
+        newService
         .getGenres()
-        .then(this.onGenresLoaded)
+        .then(onGenresLoaded)
     } 
 
-    renderFilms(arr) {
+    function renderFilms(arr) {
         // change img path
+        // console.log(arr)
         const items = arr.map((item, i) => {
 
             // create badge for each id
             const genre = item.genre_ids.map(id => {
                 // overwrite id as genre
-                this.state.genres.forEach((gen) => {
+                genres.forEach((gen) => {
                     if (id === gen.id) {
                         id = gen.name
                     }
@@ -80,23 +85,24 @@ class Searched extends Component {
         )
     }
 
-    render() {
-        let items = [];
-        if (this.state.films !== 0 && this.state.genres.length !== 0) {
-            const list = this.state.films
-            this.renderFilms(list);
-            items = this.renderFilms(list)
-        }
+    const items = renderFilms(films);
+    // if (films !== 0 && genres.length !== 0) {
+    //     const list = films;
+    //     renderFilms(list);
+    //     items = renderFilms(list)
+        
+    // }
 
-        return (
-            <>
-                <h2>Search Results</h2>
-                <Container>
-                    {items}
-                </Container>
-            </>
-        )
-    }
+
+    return (
+        <>
+            <h2>Search Results</h2>
+            <Container>
+                {items}
+            </Container>
+        </>
+    )
 }
+
 
 export default withRouter(Searched);
