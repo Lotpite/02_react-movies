@@ -1,20 +1,15 @@
 import { Form, FormControl, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { Component } from 'react';
+import { useState } from 'react';
 
-class SearchPanel extends Component {
-    state = {
-        query: ''
+const SearchPanel = () => {
+
+    const [query, setQuery] = useState();
+   
+    function getQuery(e) {
+        setQuery(query => e.target.value)
     }
 
-    getQuery = (e) => {
-        this.setState({
-            query: e.target.value
-        })
-    }
-
-
-    render () {
         return (
             <Form className="d-flex">
                 <FormControl
@@ -22,17 +17,16 @@ class SearchPanel extends Component {
                 placeholder="Search"
                 className="me-2"
                 aria-label="Search"
-                onChange={this.getQuery}
+                onChange={getQuery}
                 />
-                <Link to={`search_results/${this.state.query}`}>
+                <Link to={`search_results/${query}`}>
                     <Button variant="outline-light"
-                    onClick={this.componentWillUnmount}
+                    
                     >Search</Button>
                  </Link>
                 
             </Form>
         )
     }
-}
 
 export default SearchPanel;
