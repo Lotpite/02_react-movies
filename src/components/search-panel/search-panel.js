@@ -23,10 +23,11 @@ const SearchPanel = () => {
                 className="me-2"
                 aria-label="Search"
                 onChange={getQuery}
+                
                 />
                 <Link to={`/search_results/${query}`}>
                     <Button variant="outline-light"
-                    onClick={clearInputs}
+                    onSubmit={clearInputs}
                     >Search</Button>
                  </Link>
             </Form>

@@ -98,7 +98,6 @@ class Film extends Component {
 
     
     render() {
-        // console.log(this.state)
          const {film: {title, description, genres, poster_path}} = this.state;
          if (genres != null) {
               this.genres = genres.map((item) => {
@@ -119,14 +118,20 @@ class Film extends Component {
 
 
         return (
-        <>
-        <h2>{title}</h2>
-        <div className='some'>
-        
-        <img src={'https://image.tmdb.org/t/p/w500' + poster_path} alt="hello"></img>
-        <Badge>{this.genres}</Badge>
-        <p>{description}</p>
-        </div> 
+        <>        
+        <Container className="justify-content-md-center">
+            <Col>
+                <h3>{title}</h3>
+                <div className="some">
+                    <Card bg='light' text='dark' style={{ width: '14rem'}} className="cardList"> 
+                        <Card.Img variant="top" src={'https://image.tmdb.org/t/p/w500' + poster_path} alt={title}/>
+                    </Card>
+                    <p>{description}</p>
+                </div>            
+                <br/><br/>
+            </Col>
+        </Container>
+
         <Container className="justify-content-md-center" >
             <h2>Recommended Films</h2>
                     {items}

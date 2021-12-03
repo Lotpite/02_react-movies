@@ -15,7 +15,7 @@ const Searched = (props) => {
         
         renderSearched();
         
-    }, [films]) // atention
+    }, [films]) // rerender only films from search-panel 
 
         const renderSearched = () => {
             const {match: {params: {query}}} = props;
