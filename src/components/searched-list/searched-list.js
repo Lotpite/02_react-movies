@@ -14,6 +14,10 @@ const Searched = (props) => {
     useEffect(() => {
         
         renderSearched();
+
+        return () => {
+
+        }
         
     }, [films]) // rerender only films from search-panel 
 
@@ -21,7 +25,6 @@ const Searched = (props) => {
             const {match: {params: {query}}} = props;
             getGenresList()
             getFilmsList(query)
-            console.log(films)
         }
     
     const onGenresLoaded = (res) => { //(res) is required to send params to function
@@ -44,8 +47,6 @@ const Searched = (props) => {
     } 
 
     function renderFilms(arr) {
-        // change img path
-        // console.log(arr)
         const items = arr.map((item, i) => {
 
             // create badge for each id
@@ -86,13 +87,6 @@ const Searched = (props) => {
     }
 
     const items = renderFilms(films);
-    // if (films !== 0 && genres.length !== 0) {
-    //     const list = films;
-    //     renderFilms(list);
-    //     items = renderFilms(list)
-        
-    // }
-
 
     return (
         <>

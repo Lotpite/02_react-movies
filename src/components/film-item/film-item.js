@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import {Container, Row, Col, Card, Badge} from 'react-bootstrap';
 import FilmService from '../../services/FilmService';
 import { withRouter } from 'react-router';
@@ -7,62 +7,64 @@ import './film-item.css'
 
 // required variables = img, title, genre, description, link for button to openv
 
-class Film extends Component {
-    
+const Film = (props) => {
 
-    state = {
-        film: {},
-        related: [],
-        genres: []
+    const [movie, setMovie] = useState({});
+    const [related, setRelated] = useState([]);
+    const [genres, setGenres] = useState([]);
+
+    const filmService = new FilmService();
+
+    const onFilmLoaded = (res) => {
+        setMovie(movie => res)
     }
 
-    filmService = new FilmService();
-
-    onFilmLoaded = (film) => {
-        this.setState({film})
+    const onRelatedLoaded = (res) => {
+        setRelated(related => res)
     }
 
-    onRelatedLoaded = (related) => {
-        this.setState({related})
-    }
+    useEffect (() => { 
+            onChange()
 
-    componentDidMount () {
-        const {match: {params: {id}}} = this.props; // get id from filmlist (through router)
-        this.onChange(id)
-    }
+            return () => { // aka willUnmount
+                
+            }
 
-    onChange = (id) => {
-        this.filmService
+        },[movie])
+
+    const onChange = () => {
+        const {match: {params: {id}}} = props; // get id from filmlist (through router)
+        filmService
         .getFilmByID(id)
-        .then(this.onFilmLoaded) 
-        this.getRelated(id)
-        this.getGenresList()
+        .then(onFilmLoaded) 
+        getRelatedFilms(id)
+        getGenresList()
     }
 
-    getRelated = (id) => {
-        this.filmService
+    const getRelatedFilms = (id) => {
+            filmService
             .getRelated(id)
-            .then(this.onRelatedLoaded)
+            .then(onRelatedLoaded)
     }
 
-    onGenresLoaded = (genres) => {
-        this.setState({genres})
+    const onGenresLoaded = (res) => {
+        setGenres(genres => res)
     }
 
-    getGenresList = () => {
-        this.filmService
+    const getGenresList = () => {
+        filmService
         .getGenres()
-        .then(this.onGenresLoaded)
+        .then(onGenresLoaded)
     } 
 
-    renderFilms(arr) {
+    function renderFilms(arr) {
         // change img path
         const items = arr.map((item, i) => {
 
             // create badge for each id
             const genre = item.genre_ids.map(id => {
                 // overwrite id as genre
-                this.state.genres.forEach((gen) => {
+                genres.forEach((gen) => {
                     if (id === gen.id) {
                         id = gen.name
                     }
@@ -77,7 +79,7 @@ class Film extends Component {
             return (
                 <Col key={item.id}>
                     <Link to={`/film/${item.id}`}>
-                        <Card bg='light' text='dark' style={{ width: '14rem'}} className="cardList" onClick={() => this.onChange(item.id)}> 
+                        <Card bg='light' text='dark' style={{ width: '14rem'}} className="cardList" onClick={() => onChange(item.id)}> 
                             <Card.Img variant="top" src={item.poster_path} alt={item.title}/>
                             <Card.Body>
                                 {genre}
@@ -96,50 +98,46 @@ class Film extends Component {
         )
     }
 
-    
-    render() {
-         const {film: {title, description, genres, poster_path}} = this.state;
-         if (genres != null) {
-              this.genres = genres.map((item) => {
-                 return (
-                     <Badge bg="light" text="dark">
-                         {item}
-                     </Badge>
-                 )
-             })
-         }
+         const {title, description, poster_path} = movie;
+        //  if (genres != null) {
+        //       this.genres = genres.map((item) => {
+        //          return (
+        //              <Badge bg="light" text="dark">
+        //                  {item}
+        //              </Badge>
+        //          )
+        //      })
+        //  }
 
-        let items = [];
-        if (this.state.related!== 0 && this.state.genres.length !== 0) {
-            const list = this.state.related
-            this.renderFilms(list);
-            items = this.renderFilms(list)
-        }
+        let items = renderFilms(related);
+        // if (related!== 0 && genres.length !== 0) {
+        //     const list = related
+        //     renderFilms(list);
+        //     items = renderFilms(list)
+        // }
 
 
         return (
-        <>        
-        <Container className="justify-content-md-center">
-            <Col>
-                <h3>{title}</h3>
-                <div className="some">
-                    <Card bg='light' text='dark' style={{ width: '14rem'}} className="cardList"> 
-                        <Card.Img variant="top" src={'https://image.tmdb.org/t/p/w500' + poster_path} alt={title}/>
-                    </Card>
-                    <p>{description}</p>
-                </div>            
-                <br/><br/>
-            </Col>
-        </Container>
+            <>        
+                <Container className="justify-content-md-center">
+                    <Col>
+                        <h3>{title}</h3>
+                        <div className="some">
+                            <Card bg='light' text='dark' style={{ width: '14rem'}} className="cardList"> 
+                                <Card.Img variant="top" src={'https://image.tmdb.org/t/p/w500' + poster_path} alt={title}/>
+                            </Card>
+                            <p>{description}</p>
+                        </div>            
+                        <br/><br/>
+                    </Col>
+                </Container>
 
-        <Container className="justify-content-md-center" >
-            <h2>Recommended Films</h2>
+                <Container className="justify-content-md-center" >
+                    <h2>Recommended Films</h2>
                     {items}
-            </Container>
-
-        </>
+                </Container>
+            </>
         )
     }
-}
 
 export default withRouter(Film);
