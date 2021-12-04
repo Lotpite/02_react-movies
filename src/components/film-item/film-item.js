@@ -25,15 +25,13 @@ const Film = (props) => {
 
     useEffect (() => { 
             onChange()
-
-            return () => { // aka willUnmount
-                
-            }
-
-        },[movie])
+        },[props.id, movie]) //watching for id
 
     const onChange = () => {
         const {match: {params: {id}}} = props; // get id from filmlist (through router)
+        if (!id) {
+            return
+        }
         filmService
         .getFilmByID(id)
         .then(onFilmLoaded) 
@@ -98,46 +96,31 @@ const Film = (props) => {
         )
     }
 
-         const {title, description, poster_path} = movie;
-        //  if (genres != null) {
-        //       this.genres = genres.map((item) => {
-        //          return (
-        //              <Badge bg="light" text="dark">
-        //                  {item}
-        //              </Badge>
-        //          )
-        //      })
-        //  }
+    const {title, description, poster_path} = movie;
 
-        let items = renderFilms(related);
-        // if (related!== 0 && genres.length !== 0) {
-        //     const list = related
-        //     renderFilms(list);
-        //     items = renderFilms(list)
-        // }
+    let items = renderFilms(related);
 
+    return (
+        <>        
+            <Container className="justify-content-md-center">
+                <Col>
+                    <h3>{title}</h3>
+                    <div className="some">
+                        <Card bg='light' text='dark' style={{ width: '14rem'}} className="cardList"> 
+                            <Card.Img variant="top" src={'https://image.tmdb.org/t/p/w500' + poster_path} alt={title}/>
+                        </Card>
+                        <p>{description}</p>
+                    </div>            
+                    <br/><br/>
+                </Col>
+            </Container>
 
-        return (
-            <>        
-                <Container className="justify-content-md-center">
-                    <Col>
-                        <h3>{title}</h3>
-                        <div className="some">
-                            <Card bg='light' text='dark' style={{ width: '14rem'}} className="cardList"> 
-                                <Card.Img variant="top" src={'https://image.tmdb.org/t/p/w500' + poster_path} alt={title}/>
-                            </Card>
-                            <p>{description}</p>
-                        </div>            
-                        <br/><br/>
-                    </Col>
-                </Container>
-
-                <Container className="justify-content-md-center" >
-                    <h2>Recommended Films</h2>
-                    {items}
-                </Container>
-            </>
-        )
-    }
+            <Container className="justify-content-md-center" >
+                <h2>Recommended Films</h2>
+                {items}
+            </Container>
+        </>
+    )
+}
 
 export default withRouter(Film);

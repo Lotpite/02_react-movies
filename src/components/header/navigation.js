@@ -1,6 +1,7 @@
 import {Navbar, Nav, Container} from 'react-bootstrap';
 import SearchPanel from '../search-panel/search-panel';
 import {Link} from 'react-router-dom';
+import './navigation.css';
 
 const Navigation = () => {
     return (
@@ -14,12 +15,12 @@ const Navigation = () => {
                 style={{ maxHeight: '100px' }}
                 navbarScroll
             >
-                <Nav.Link  variant="light">
-                    <Link to="/">Popular</Link>
-                </Nav.Link>
-                <Nav.Link  variant="light">
-                    <Link to="/favorites">Favorites</Link>
-                </Nav.Link>
+                <Link  className="light" to="/">
+                    Popular
+                </Link>
+                <Link  className="light" to="/favorites">
+                    Favorites
+                </Link>
             </Nav>
             <SearchPanel/>
             </Navbar.Collapse>

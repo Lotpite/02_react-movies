@@ -14,12 +14,7 @@ const Searched = (props) => {
     useEffect(() => {
         
         renderSearched();
-
-        return () => {
-
-        }
-        
-    }, [films]) // rerender only films from search-panel 
+    }, [props.query]) //watching for query
 
         const renderSearched = () => {
             const {match: {params: {query}}} = props;
