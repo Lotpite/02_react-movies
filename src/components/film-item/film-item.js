@@ -55,6 +55,11 @@ const Film = (props) => {
         .then(onGenresLoaded)
     } 
 
+    function addToFavorites (id, item) { 
+        localStorage.setItem(id, JSON.stringify(item))
+     }
+
+
     function renderFilms(arr) {
         // change img path
         const items = arr.map((item, i) => {
@@ -76,14 +81,17 @@ const Film = (props) => {
 
             return (
                 <Col key={item.id}>
-                    <Link to={`/film/${item.id}`}>
+                    
                         <Card bg='light' text='dark' style={{ width: '14rem'}} className="cardList" onClick={() => onChange(item.id)}> 
+                        <Link to={`/film/${item.id}`}>
                             <Card.Img variant="top" src={item.poster_path} alt={item.title}/>
+                        </Link>
                             <Card.Body>
+                            <Badge bg="danger" className="favor" onClick={() => addToFavorites(item.id, item)}>Like</Badge>
                                 {genre}
                             </Card.Body>
                         </Card>
-                    </Link>
+                    
                     <br />
                 </Col>
             )

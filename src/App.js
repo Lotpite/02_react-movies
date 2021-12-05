@@ -4,6 +4,7 @@ import FilmList from './components/film-list/film-list';
 import Film from './components/film-item/film-item';
 import Searched from './components/searched-list/searched-list';
 import {Switch, Route} from 'react-router-dom';
+import Favorites from './components/favorites/favorites';
 
 function App() {
   return (
@@ -22,6 +23,10 @@ function App() {
 
         <Route exact path='/search_results/:query'>
           <Searched/>
+        </Route>
+
+        <Route exact path='/favorites'>
+          <Favorites/>
         </Route>
 
       </Switch>

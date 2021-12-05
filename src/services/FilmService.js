@@ -53,6 +53,7 @@ class FilmService {
             genre_ids: film.genre_ids,
             description: film.overview,
             poster_path: 'https://image.tmdb.org/t/p/w500' + film.poster_path,
+            onLike: false
         }
     }
 }

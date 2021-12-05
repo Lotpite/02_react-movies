@@ -1,67 +1,68 @@
 import {Container, Row, Col, Card, Button, Badge} from 'react-bootstrap';
 import FilmService from '../../services/FilmService';
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
 import './film-list.css';   
 
-class FilmList extends Component {
-    
-    state = {
-        films: [],
-        genres: [],
-        page: 1,
-        newItemLoading: false
+const FilmList = () => {
+
+    const [films, setFilms] = useState([]);
+    const [genres, setGenres] = useState([]);
+    const [page, setPage] = useState(1);
+    const [newItemLoading, setNewItemLoading] = useState(false);
+
+    const newService = new FilmService();
+
+    const onFilmListLoading = () => {
+        setNewItemLoading(onFilmListLoading => !onFilmListLoading)
     }
 
-    newService = new FilmService();
-
-    componentDidMount() {
-        this.onRequest();
-        this.newService.getGenres()
-            .then(this.onGenresLoaded)
+    const onGenresLoaded = (res) => {
+        setGenres(genres => res)
     }
+
+
+    useEffect(() => {
+        onRequest();
+    }, [])
 
     // load film list (request to server)
-    onRequest = (page) => {
-        this.onFilmListLoading();
-        this.newService
+    const onRequest = () => {
+        onFilmListLoading();
+        newService
             .getPopular(page)
-            .then(this.onListLoaded)
-    }
-
-    onFilmListLoading = () => {
-        this.setState({
-            newItemLoading: true
-        })
+            .then(onListLoaded)
+        getGenresList()
     }
 
     // write list to the state
-    onListLoaded = (newFilms) => {
-        this.setState(({page, films}) => ({
-            films: [...films, ...newFilms], // at first time films is empty array
-            newItemLoading: false,
-            page: page + 1
-        }))
+    const onListLoaded = (res) => {
+        setFilms(films => [...films, ...res])
+        setPage(page => page + 1)
+        setNewItemLoading(newItemLoading => false)
     }
 
-    onGenresLoaded = (genres) => {
-        this.setState({genres})
-    }
-
-    getGenresList = () => {
-        this.newService
+    const getGenresList = () => {
+        newService
         .getGenres()
-        .then(this.onGenresLoaded)
+        .then(onGenresLoaded)
     }    
 
-    renderFilms(arr) {
+     function addToFavorites (id, item) { 
+        item.onLike= !item.onLike
+        console.log(item) 
+        localStorage.setItem(id, JSON.stringify(item))
+     }
+
+    
+
+    function renderFilms(arr) {
         // change img path
         const items = arr.map((item, i) => {
-
             // create badge for each id
             const genre = item.genre_ids.map(id => {
                 // overwrite id as genre
-                this.state.genres.forEach((gen) => {
+                genres.forEach((gen) => {
                     if (id === gen.id) {
                         id = gen.name
                     }
@@ -75,14 +76,17 @@ class FilmList extends Component {
 
             return (
                 <Col key={item.id}>
-                    <Link to={`/film/${item.id}`}>
+                    
                         <Card bg='light' text='dark' style={{ width: '14rem'}} className="cardList"> 
+                        <Link to={`/film/${item.id}`}>
                             <Card.Img variant="top" src={item.poster_path} alt={item.title}/>
+                        </Link>
                             <Card.Body>
+                            <Badge bg="danger" className="favor" onClick={() => addToFavorites(item.id, item)}>{!item.onlike ? 'Add' : 'Remove'}</Badge>
                                 {genre}
+                                
                             </Card.Body>
                         </Card>
-                    </Link>
                     <br />
                 </Col>
             )
@@ -94,28 +98,18 @@ class FilmList extends Component {
             </Row>
         )
     }
-    
-    render () {       
        
-        // if - to avoid empty arrays
-        let items = [];
-        if (this.state.films.length !== 0 && this.state.genres.length !== 0) {
-            const list = this.state.films
-            this.renderFilms(list);
-            items = this.renderFilms(list)
-        }
-        const {page, newItemLoading} = this.state
+        let items = renderFilms(films);
 
         return (
             <Container className="justify-content-md-center" >
                     {items}
                     <Button variant="dark" size="lg"
                      disabled={newItemLoading}
-                     onClick={() => this.onRequest(page)}
+                     onClick={() => onRequest(page)}
                      >show more</Button>
             </Container>
         )
     }
-}
 
 export default FilmList;
