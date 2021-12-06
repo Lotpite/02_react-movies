@@ -48,9 +48,9 @@ const FilmList = () => {
         .then(onGenresLoaded)
     }    
 
-     function addToFavorites (id, item) { 
-        item.onLike= !item.onLike
-        console.log(item) 
+     function addToFavorites (id, item, i) { 
+        //  item.onLike = !item.onLike
+        //  setFilms(film => films[i] === item ? item : film)
         localStorage.setItem(id, JSON.stringify(item))
      }
 
@@ -82,7 +82,7 @@ const FilmList = () => {
                             <Card.Img variant="top" src={item.poster_path} alt={item.title}/>
                         </Link>
                             <Card.Body>
-                            <Badge bg="danger" className="favor" onClick={() => addToFavorites(item.id, item)}>{!item.onlike ? 'Add' : 'Remove'}</Badge>
+                            <Badge bg="danger" className="favor" onClick={() => addToFavorites(item.id, item, i)}>{!item.onlike ? 'Add' : 'Remove'}</Badge>
                                 {genre}
                                 
                             </Card.Body>

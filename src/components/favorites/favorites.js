@@ -22,15 +22,15 @@ const Favorites = () => {
             .then(onGenresLoaded)
     } 
 
-    function addToFavorites (id, item) { 
-        localStorage.setItem(id, JSON.stringify(item))
+    function removeFavorites (id) { 
+        localStorage.removeItem(id)
         
      }
 
      useEffect(() => {
 
         getGenresList()
-    }, [])
+    }, [Object.values(localStorage)])
 
     function renderFilm (film) {
         const {title, poster_path, id, genre_ids} = film;
@@ -57,7 +57,7 @@ const Favorites = () => {
                             <Card.Img variant="top" src={poster_path} alt={title}/> 
                         </Link>
                             <Card.Body>
-                            <Badge bg="danger" className="favor" onClick={() => addToFavorites(id, film)}>Like</Badge>
+                            <Badge bg="danger" className="favor" onClick={() => removeFavorites(id, film)}>Remove</Badge>
                                 {genre}
                             </Card.Body>
                         </Card>
