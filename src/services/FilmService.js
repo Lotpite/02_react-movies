@@ -1,7 +1,7 @@
 class FilmService {
 
     // _apiKey = '052a7bfc73ba8f24b52cbf7c006da253';
-    _apiKey = process.env.REACT_APP_API_KEY;
+    _apiKey = '052a7bfc73ba8f24b52cbf7c006da253';
     _apiBase = 'https://api.themoviedb.org/3/';
     _basePage = 1;
 
