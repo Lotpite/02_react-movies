@@ -74,6 +74,9 @@ const FilmList = () => {
                 )
             })
 
+            
+            
+            
             return (
                 <Col key={item.id}>
                     
