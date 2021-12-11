@@ -19,7 +19,7 @@ class FilmService {
 
     getFilmByID = async (id) => {
         const res = await this.getResource(`${this._apiBase}movie/${id}?api_key=${this._apiKey}`); //Request to DBі
-        return this._transcriptFilm(res);
+        return this._transcriptFilmId(res);
     }
 
     getPopular = async (page = this._basePage) => {
@@ -51,6 +51,17 @@ class FilmService {
             id: film.id,
             title: film.original_title,
             genre_ids: film.genre_ids,
+            description: film.overview,
+            poster_path: 'https://image.tmdb.org/t/p/w500' + film.poster_path,
+            onLike: false
+        }
+    }
+
+    _transcriptFilmId(film) {
+        return {
+            id: film.id,
+            title: film.original_title,
+            genre_ids: film.genres.map(gen => gen.id),
             description: film.overview,
             poster_path: 'https://image.tmdb.org/t/p/w500' + film.poster_path,
             onLike: false

@@ -1,4 +1,4 @@
-import {Container, Row, Col, Card, Button, Badge} from 'react-bootstrap';
+import {Container, Row, Col, Card, Button, Badge, Toast} from 'react-bootstrap';
 import FilmService from '../../services/FilmService';
 import { useEffect, useState } from 'react';
 import {Link} from 'react-router-dom';
@@ -46,16 +46,35 @@ const FilmList = () => {
         newService
         .getGenres()
         .then(onGenresLoaded)
-    }    
+    }
 
-     function addToFavorites (id, item, i) { 
-        //  item.onLike = !item.onLike
-        //  setFilms(film => films[i] === item ? item : film)
-        localStorage.setItem(id, JSON.stringify(item))
+     function onToggleFavorites (id, item) {
+         if (!item.onLike) {
+            addFavorite(id, item, films, setFilms)
+
+         } else {
+            removeFavorite(id, item, films, setFilms)
+         }
      }
 
-    
+     function addFavorite(id, item, list, setList) {
+        const index = list.findIndex((film) => film === item);
+            item.onLike = !item.onLike
+            const oldlist = [...list.slice(0, index), ...list.slice(index + 1)]
+            const newlist = [item,...oldlist]
+            setList([...newlist])
+            localStorage.setItem(id, JSON.stringify(item))
+     }
 
+     function removeFavorite(id, item, list, setList) {
+        const index = list.findIndex((film) => film === item);
+            item.onLike = !item.onLike
+            const oldlist = [...list.slice(0, index), ...list.slice(index + 1)]
+            const newlist = [item,...oldlist]
+            setList([...newlist])
+            localStorage.removeItem(id)
+     }
+     
     function renderFilms(arr) {
         // change img path
         const items = arr.map((item, i) => {
@@ -74,8 +93,9 @@ const FilmList = () => {
                 )
             })
 
-            
-            
+            if(localStorage.getItem(item.id)) {
+                item.onLike = true
+            }
             
             return (
                 <Col key={item.id}>
@@ -85,7 +105,7 @@ const FilmList = () => {
                             <Card.Img variant="top" src={item.poster_path} alt={item.title}/>
                         </Link>
                             <Card.Body>
-                            <Badge bg="danger" className="favor" onClick={() => addToFavorites(item.id, item, i)}>{!item.onlike ? 'Add' : 'Remove'}</Badge>
+                            <Badge bg="danger" className="favor" onClick={() => onToggleFavorites(item.id, item, i)}>{!item.onLike === true ? 'Add' : 'Remove'}</Badge>
                                 {genre}
                                 
                             </Card.Body>

@@ -41,8 +41,24 @@ const Searched = (props) => {
         .then(onGenresLoaded)
     } 
 
-    function addToFavorites (id, item) { 
-        localStorage.setItem(id, JSON.stringify(item))
+    function onToggleFavorites (id, item) {
+        //  console.log(item.onLike)
+         if (!item.onLike) {
+            const index = films.findIndex((film) => film === item);
+            item.onLike = !item.onLike
+            const oldFilms = [...films.slice(0, index), ...films.slice(index + 1)]
+            const newFilms = [item,...oldFilms]
+            setFilms([...newFilms])
+            localStorage.setItem(id, JSON.stringify(item))
+
+         } else {
+            const index = films.findIndex((film) => film === item);
+            item.onLike = !item.onLike
+            const oldFilms = [...films.slice(0, index), ...films.slice(index + 1)]
+            const newFilms = [item,...oldFilms]
+            setFilms([...newFilms])
+            localStorage.removeItem(id)
+         }
      }
 
     function renderFilms(arr) {
@@ -63,6 +79,10 @@ const Searched = (props) => {
                 )
             })
 
+            if(localStorage.getItem(item.id)) {
+                item.onLike = true
+            }
+
             return (
                 <Col key={item.id}>
                     
@@ -71,7 +91,7 @@ const Searched = (props) => {
                             <Card.Img variant="top" src={item.poster_path} alt={item.title}/>
                         </Link>
                             <Card.Body>
-                            <Badge bg="danger" className="favor" onClick={() => addToFavorites(item.id, item)}>Like</Badge>
+                            <Badge bg="danger" className="favor" onClick={() => onToggleFavorites(item.id, item, i)}>{!item.onLike === true ? 'Add' : 'Remove'}</Badge>
                                 {genre}
                             </Card.Body>
                         </Card>
