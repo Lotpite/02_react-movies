@@ -45,18 +45,16 @@ const Searched = (props) => {
         //  console.log(item.onLike)
          if (!item.onLike) {
             const index = films.findIndex((film) => film === item);
-            item.onLike = !item.onLike
-            const oldFilms = [...films.slice(0, index), ...films.slice(index + 1)]
-            const newFilms = [item,...oldFilms]
-            setFilms([...newFilms])
+            const newItem = {...item, onLike: !item.onLike}
+            const newlist = [...films.slice(0, index), newItem, ...films.slice(index + 1)]
+            setFilms([...newlist])
             localStorage.setItem(id, JSON.stringify(item))
 
          } else {
             const index = films.findIndex((film) => film === item);
-            item.onLike = !item.onLike
-            const oldFilms = [...films.slice(0, index), ...films.slice(index + 1)]
-            const newFilms = [item,...oldFilms]
-            setFilms([...newFilms])
+            const newItem = {...item, onLike: !item.onLike}
+            const newlist = [...films.slice(0, index), newItem, ...films.slice(index + 1)]
+            setFilms([...newlist])
             localStorage.removeItem(id)
          }
      }

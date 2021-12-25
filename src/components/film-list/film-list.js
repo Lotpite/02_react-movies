@@ -59,20 +59,18 @@ const FilmList = () => {
 
      function addFavorite(id, item, list, setList) {
         const index = list.findIndex((film) => film === item);
-            item.onLike = !item.onLike
-            const oldlist = [...list.slice(0, index), ...list.slice(index + 1)]
-            const newlist = [item,...oldlist]
-            setList([...newlist])
-            localStorage.setItem(id, JSON.stringify(item))
+        const newItem = {...item, onLike: !item.onLike}
+        const newlist = [...list.slice(0, index), newItem, ...list.slice(index + 1)]
+        setList([...newlist])
+        localStorage.setItem(id, JSON.stringify(item))
      }
 
      function removeFavorite(id, item, list, setList) {
         const index = list.findIndex((film) => film === item);
-            item.onLike = !item.onLike
-            const oldlist = [...list.slice(0, index), ...list.slice(index + 1)]
-            const newlist = [item,...oldlist]
-            setList([...newlist])
-            localStorage.removeItem(id)
+        const newItem = {...item, onLike: !item.onLike}
+        const newlist = [...list.slice(0, index), newItem, ...list.slice(index + 1)]
+        setList([...newlist])
+        localStorage.removeItem(id)
      }
      
     function renderFilms(arr) {
